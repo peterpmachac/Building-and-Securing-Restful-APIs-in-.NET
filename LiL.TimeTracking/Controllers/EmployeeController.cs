@@ -95,10 +95,13 @@ namespace LiL.TimeTracking.Controllers
         [ProducesResponseType<ObjectResult>(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Post([FromBody] Resources.Employee value)
         {
-            if(!ModelState.IsValid){
+            if(!ModelState.IsValid)
+            {
                 return Problem("Invalid employee resource request", statusCode:StatusCodes.Status400BadRequest);
             }
-            try{
+
+            try
+            {
                 var dbEmployee = value.Adapt<Models.Employee>();
 
                 await ctx.Employees.AddAsync(dbEmployee);
@@ -108,7 +111,8 @@ namespace LiL.TimeTracking.Controllers
 
                 return CreatedAtAction(nameof(Get), new {id=response.Id}, response);
             }
-            catch(Exception ex){
+            catch(Exception ex)
+            {
                 return Problem("Problem persisting employee resource", statusCode:StatusCodes.Status500InternalServerError);
             }
         }
@@ -121,10 +125,13 @@ namespace LiL.TimeTracking.Controllers
         [ProducesResponseType<ObjectResult>(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Put(int id, [FromBody] Resources.Employee value)
         {
-            if(!ModelState.IsValid){
+            if(!ModelState.IsValid)
+            {
                 return Problem("Invalid employee resource request", statusCode:StatusCodes.Status400BadRequest);
             }
-            try{
+
+            try
+            {
                 var dbEmployee = value.Adapt<Models.Employee>();
 
                 ctx.Entry<Models.Employee>(dbEmployee).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -132,7 +139,8 @@ namespace LiL.TimeTracking.Controllers
                 return NoContent();
 
             }
-            catch(DbUpdateConcurrencyException dbex){
+            catch(DbUpdateConcurrencyException dbex)
+            {
                 var dbEmployee = ctx.Employees.Find(id);
                 if(dbEmployee == null)
                 {
@@ -142,7 +150,8 @@ namespace LiL.TimeTracking.Controllers
                     return Problem("Problem persisting employee resource", statusCode:StatusCodes.Status500InternalServerError);
                 }
             }
-            catch(Exception ex){
+            catch(Exception ex)
+            {
                 return Problem("Problem persisting employee resource", statusCode:StatusCodes.Status500InternalServerError);
             }
         }
@@ -158,7 +167,9 @@ namespace LiL.TimeTracking.Controllers
             if(!ModelState.IsValid){
                 return Problem("Invalid employee resource request", statusCode:StatusCodes.Status400BadRequest);
             }
-            try{
+
+            try
+            {
                 var dbEmployee = await ctx.Employees.FindAsync(id);
                 if(dbEmployee == null){
                     return NotFound();
@@ -175,7 +186,8 @@ namespace LiL.TimeTracking.Controllers
                 return NoContent();
 
             }
-            catch(Exception ex){
+            catch(Exception ex)
+            {
                 return Problem("Problem persisting employee resource", statusCode:StatusCodes.Status500InternalServerError);
             }
         }
