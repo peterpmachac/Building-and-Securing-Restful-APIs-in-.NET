@@ -1,0 +1,60 @@
+@LiL.TimeTracking_HostAddress = https://localhost:7228
+
+# access token should be pasted here (without space or quotes)
+@AccessToken=
+
+
+POST {{LiL.TimeTracking_HostAddress}}/identity/register
+Content-Type: application/json
+
+{
+    "email":"matt@hplussport.com",
+    "password":"pass@Word1"
+}
+
+###
+
+
+POST {{LiL.TimeTracking_HostAddress}}/identity/login
+Content-Type: application/json
+Accept:application/json 
+
+{
+    "email":"matt@hplussport.com",
+    "password":"pass@Word1"
+}
+
+###
+
+# test authentication
+
+GET {{LiL.TimeTracking_HostAddress}}/api/Employee
+Accept:application/json
+Authorization: Bearer {{AccessToken}}
+###
+
+DELETE {{LiL.TimeTracking_HostAddress}}/api/Project/1
+
+###
+
+
+# invalid user for authorization policy (email domain)
+POST {{LiL.TimeTracking_HostAddress}}/identity/register
+Content-Type: application/json
+
+{
+    "email":"matt@trainingxyz.com",
+    "password":"pass@Word1"
+}
+
+###
+
+
+POST {{LiL.TimeTracking_HostAddress}}/identity/login
+Content-Type: application/json
+Accept:application/json 
+
+{
+    "email":"matt@trainingxyz.com",
+    "password":"pass@Word1"
+}
